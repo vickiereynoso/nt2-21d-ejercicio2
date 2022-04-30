@@ -17,6 +17,11 @@
     <input type="text" class="form-control" v-model="criterioDeBusqueda"
         placeholder="Ingresar un criterio de busqueda...">
     <br>
+
+    <div v-if='mostrarAdvertencia' class="alert alert-warning">
+        Ingrese al menos 3 caracteres.
+    </div>
+
     <div class="card-deck m-0">
         <div class="row">
             <div class="col" v-for="persona in personasFiltradas">
@@ -31,6 +36,63 @@
         </div>
     </div>
 
+    <input type="text" class="form-control" v-model="criterioDeBusquedaNombre"
+    placeholder="Busqueda por nombre...">
+    <br>
+    <div class="card-deck m-0">
+        <div class="row">
+            <div class="col" v-for="persona in personasFiltradasNombre">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{getNombreCompleto(persona)}}</h5>
+                        <p class="card-text">dni {{persona.dni}}</p>
+                        <a href="#" class="card-link">{{persona.correo}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <input type="text" class="form-control" v-model="criterioDeBusquedaApellido"
+    placeholder="Busqueda por apellido...">
+    <br>
+    <div class="card-deck m-0">
+        <div class="row">
+            <div class="col" v-for="persona in personasFiltradasApellido">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{getNombreCompleto(persona)}}</h5>
+                        <p class="card-text">dni {{persona.dni}}</p>
+                        <a href="#" class="card-link">{{persona.correo}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <input type="text" class="form-control" v-model="criterioDeBusquedaDni"
+    placeholder="Busqueda por DNI...">
+    <br>
+    <div class="card-deck m-0">
+        <div class="row">
+            <div class="col" v-for="persona in personasFiltradasDni">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{getNombreCompleto(persona)}}</h5>
+                        <p class="card-text">dni {{persona.dni}}</p>
+                        <a href="#" class="card-link">{{persona.correo}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
 </div>
 
 </html>
@@ -40,6 +102,12 @@
         el: '#app',
         data: {
             criterioDeBusqueda: '',
+            criterioDeBusqueda: '',
+            criterioDeBusquedaNombre: '',
+            criterioDeBusquedaApellido: '',
+            criterioDeBusquedaDni: '',
+            advertenciaMinCaracteres: true,
+            minCaracteres:3,
             //Aquí, en este array es donde tienen que agregar su información
             personas: [
                 {
@@ -49,10 +117,58 @@
                     dni: "20442873"
                 },
                 {
-                    nombre: "...",
-                    apellido: "...",
-                    correo: "...",
-                    dni: "..."
+                    nombre: "Victoria",
+                    apellido: "Reynoso",
+                    correo: "victoriareynoso88@gmail.com",
+                    dni: "34087408"
+                },
+                {
+                    nombre: "Juan",
+                    apellido: "Perez",
+                    correo: "juanpi8867@gmail.com",
+                    dni: "33484771"
+                },
+                {
+                    nombre: "Beatriz",
+                    apellido: "Guzman",
+                    correo: "beat77@hotmail.com",
+                    dni: "15378999"
+                },
+                {
+                    nombre: "Adrian",
+                    apellido: "Bermudez",
+                    correo: "adri4nber@gmail.com",
+                    dni: "27497186"
+                },
+                {
+                    nombre: "Sofia",
+                    apellido: "Castro",
+                    correo: "sofi_castro94@gmail.com",
+                    dni: "39028235"
+                },
+                {
+                    nombre: "Abel",
+                    apellido: "Gomez",
+                    correo: "ab.gomez@hotmail.com",
+                    dni: "37491734"
+                },
+                {
+                    nombre: "Estefania",
+                    apellido: "Camaño",
+                    correo: "estefiKm0@gmail.com",
+                    dni: "34817555"
+                },
+                {
+                    nombre: "Andres",
+                    apellido: "Pecoraro",
+                    correo: "andy_pec@hotmail.com",
+                    dni: "42985354"
+                },
+                {
+                    nombre: "Flavia",
+                    apellido: "Vercesi",
+                    correo: "flachu89@hotmail.com",
+                    dni: "32951520"
                 },
             ]
 
@@ -63,7 +179,38 @@
                     let registroCompleto = `${persona.nombre} ${persona.apellido} ${persona.dni} ${persona.correo}`
                     return registroCompleto.toLowerCase().includes(this.criterioDeBusqueda.toLowerCase())
                 });
+        },
+        personasFiltradasNombre() {
+                 return this.personas.filter((persona) => { //arma array
+                    
+                    let registroCompleto2 = `${persona.nombre} `
+                    return (registroCompleto2.charAt(0).toLowerCase() == this.criterioDeBusquedaNombre.toLowerCase()) 
+
+                });
+            },  
+            personasFiltradasApellido() {
+                 return this.personas.filter((persona) => { //arma array
+                    
+                    let registroCompleto3 = `${persona.apellido} `
+
+                    return (registroCompleto3.charAt(0).toLowerCase() == this.criterioDeBusquedaApellido.toLowerCase()) 
+
+                });
+            }, 
+            personasFiltradasDni() {
+                 return this.personas.filter((persona) => { //arma array
+                    
+                    let registroCompleto4 = `${persona.dni} `
+
+                    return (registroCompleto4.toLowerCase().substring(0,2) == this.criterioDeBusquedaDni.toLowerCase()) 
+
+                });
+            },
+            mostrarAdvertencia(){
+                return this.criterioDeBusqueda.length<this.minCaracteres;
             }
+
+             
         },
         methods: {
             getNombreCompleto(persona) {
